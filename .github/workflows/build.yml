@@ -30,7 +30,10 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
-      - name: Build and analyze
+      - name: Build
+        run: ./gradlew compileJava -x test -x generateLtwaListMV --info
+      - name: Sonar analysis
+        if: ${{ github.repository == 'JabRef/jabref' && secrets.SONAR_TOKEN != '' }}
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew compileJava sonarqube -x test -x generateLtwaListMV --info
+        run: ./gradlew sonarqube -x test -x generateLtwaListMV --info --stacktrace
