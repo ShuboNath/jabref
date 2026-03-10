@@ -87,8 +87,16 @@ tasks.cyclonedxBom {
 }
 sonar {
     properties {
+
         property("sonar.projectKey", "ShuboNath_jabref")
         property("sonar.organization", "shubonath")
         property("sonar.java.source", "25")
+
+    }
+}
+
+tasks.named("sonarqube") {
+    onlyIf {
+        System.getenv("SONAR_TOKEN") != null
     }
 }
