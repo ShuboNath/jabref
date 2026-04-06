@@ -205,6 +205,27 @@ public class AuthorList implements Iterable<Author> {
         return AuthorList.parse(authors).getAsLastFirstNamesWithAnd(false);
     }
 
+    /// Fixes author names that may be presented in different formats.
+    /// Normally each author is separated by " and ", but some sources use comma separation
+    /// with a trailing comma. This method detects and handles both formats.
+    ///
+    /// @param s The author string
+    /// @return The fixed author string
+    public static String fixAuthor(String s) {
+        int index = s.indexOf(" and ");
+        if (index >= 0) {
+            return AuthorList.fixAuthorLastNameFirst(s);
+        }
+        // Look for the comma at the end:
+        index = s.lastIndexOf(',');
+        if (index == (s.length() - 1)) {
+            String mod = s.substring(0, s.length() - 1).replace(", ", " and ");
+            return AuthorList.fixAuthorLastNameFirst(mod);
+        } else {
+            return AuthorList.fixAuthorLastNameFirst(s);
+        }
+    }
+
     /// This is a convenience method for getAuthorsLastFirstAnds()
     ///
     /// @see AuthorList#getAsLastFirstNamesWithAnd
