@@ -97,6 +97,7 @@ public record PanelStep(@NonNull String title,
 
         private Builder(String title) {
             super(title);
+            this.title = title;
         }
 
         public Builder position(@NonNull PanelPosition position) {
